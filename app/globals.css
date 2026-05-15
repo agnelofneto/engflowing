@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #F7F5F0;
+  --paper-dark: #EFEBE0;
+  --ink-900: #1A1812;
+  --ink-800: #2A271F;
+  --ink-600: #4A4538;
+  --ink-400: #8A8270;
+  --ink-200: #D9D3C2;
+  --amber-accent: #C8801A;
+  --amber-deep: #8F5612;
+  --sage: #5C7A5B;
+  --rust: #A8472A;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink-900);
+}
+
+body {
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(at 20% 10%, rgba(200,128,26,0.05) 0px, transparent 50%),
+    radial-gradient(at 80% 90%, rgba(92,122,91,0.04) 0px, transparent 50%),
+    var(--paper);
+  background-attachment: fixed;
+}
+
+/* Typography */
+.font-display { font-family: var(--font-display), Georgia, serif; }
+.font-sans { font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; }
+.font-mono { font-family: var(--font-mono), "SF Mono", Consolas, monospace; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink-900);
+}
+
+/* Form elements — refined, editorial style */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(255,255,255,0.6);
+  border: 1px solid var(--ink-200);
+  border-radius: 2px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 15px;
+  color: var(--ink-900);
+  transition: border-color 0.15s, background 0.15s;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--amber-accent);
+  background: rgba(255,255,255,0.9);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--ink-400);
+}
+
+label {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-600);
+  letter-spacing: 0.02em;
+}
+
+button {
+  font-family: var(--font-sans), sans-serif;
+  cursor: pointer;
+}
+
+/* Decorative ornament */
+.ornament::before {
+  content: "✦";
+  display: inline-block;
+  margin-right: 0.6em;
+  color: var(--amber-accent);
+  font-size: 0.7em;
+  vertical-align: 0.2em;
+}
+
+/* Section divider */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 3rem 0;
+}
+.divider::before, .divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--ink-200);
+}
+.divider-mark {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--amber-accent);
+}
+
+/* Star rating */
+.star-active { color: var(--amber-accent); }
+.star-inactive { color: var(--ink-200); }
+
+/* Editorial drop shadow on cards */
+.card-paper {
+  background: rgba(255,255,255,0.55);
+  border: 1px solid var(--ink-200);
+  border-radius: 2px;
+  position: relative;
+}
+
+/* Subtle grain texture using SVG */
+.grain {
+  position: relative;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+}
+
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+}
