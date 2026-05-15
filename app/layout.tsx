@@ -66,8 +66,11 @@ export default function RootLayout({
               <Link href="/salarios" className="px-3 py-2 hover:opacity-70 transition" style={{ color: "var(--ink-600)" }}>
                 Salários
               </Link>
-              <Link href="/empresas" className="px-3 py-2 hover:opacity-70 transition" style={{ color: "var(--ink-600)" }}>
+          <Link href="/empresas" className="px-3 py-2 hover:opacity-70 transition" style={{ color: "var(--ink-600)" }}>
                 Empresas
+              </Link>
+              <Link href="/diplomas" className="px-3 py-2 hover:opacity-70 transition" style={{ color: "var(--ink-600)" }}>
+                Diplomas
               </Link>
               <Link href="/submeter-salario" className="px-3 py-2 ml-2" style={{
                 background: "var(--ink-900)",
@@ -98,6 +101,7 @@ export default function RootLayout({
               <ul className="space-y-1.5">
                 <li><Link href="/salarios" className="hover:underline">Quadro de salários</Link></li>
                 <li><Link href="/empresas" className="hover:underline">Ranking de empresas</Link></li>
+                <li><Link href="/diplomas" className="hover:underline">Validar diploma</Link></li>
                 <li><Link href="/submeter-salario" className="hover:underline">Partilhar salário</Link></li>
                 <li><Link href="/avaliar-empresa" className="hover:underline">Avaliar empresa</Link></li>
               </ul>
