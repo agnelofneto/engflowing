@@ -2,7 +2,8 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { ENGENHARIAS } from "@/lib/constants";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 interface AggregatedSalary {
   engenharia: string;
