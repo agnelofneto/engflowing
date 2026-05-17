@@ -79,6 +79,7 @@ export default async function SalariosPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
+      {/* Header */}
       <div className="mb-12 flex justify-between items-end flex-wrap gap-4">
         <div>
           <div className="font-sans text-xs uppercase tracking-[0.3em] mb-3" style={{ color: "var(--amber-accent)" }}>
@@ -105,12 +106,16 @@ export default async function SalariosPage() {
           <p className="font-display text-2xl mb-4" style={{ color: "var(--ink-600)" }}>
             Ainda não há submissões aprovadas.
           </p>
+          <p className="font-sans text-sm mb-8" style={{ color: "var(--ink-400)" }}>
+            Sê dos primeiros a contribuir para o quadro público.
+          </p>
           <Link href="/submeter-salario" className="px-6 py-3 font-sans text-sm" style={{ background: "var(--ink-900)", color: "var(--paper)" }}>
             Partilhar o meu salário →
           </Link>
         </div>
       ) : (
         <>
+          {/* ====== 1. RESUMO AGREGADO ====== */}
           <section className="mb-12">
             <div className="flex justify-between items-baseline mb-3">
               <p className="font-sans text-xs uppercase tracking-[0.2em]" style={{ color: "var(--ink-600)" }}>
@@ -120,6 +125,7 @@ export default async function SalariosPage() {
                 Médias calculadas com as submissões disponíveis
               </p>
             </div>
+
             <div className="card-paper overflow-x-auto">
               <table className="w-full font-sans text-sm">
                 <thead>
@@ -138,7 +144,10 @@ export default async function SalariosPage() {
                       <td className="py-3 px-3" style={{ color: "var(--ink-900)" }}>{g.cargo}</td>
                       <td className="py-3 px-2" style={{ color: "var(--ink-600)" }}>{g.cidade}</td>
                       <td className="text-center py-3 px-2">
-                        <span className="font-sans text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: g.nivel.bg, color: g.nivel.color }}>
+                        <span
+                          className="font-sans text-xs px-2 py-0.5 rounded-full font-medium"
+                          style={{ background: g.nivel.bg, color: g.nivel.color }}
+                        >
                           {g.nivel.label}
                         </span>
                       </td>
@@ -148,7 +157,9 @@ export default async function SalariosPage() {
                       <td className="text-right py-3 px-2 tabular-nums">
                         {g.liquidoMensal ? `${g.liquidoMensal.toLocaleString("pt-PT")} €` : <span style={{ color: "var(--ink-400)" }}>—</span>}
                       </td>
-                      <td className="text-right py-3 px-3 text-xs" style={{ color: "var(--ink-400)" }}>{g.n}</td>
+                      <td className="text-right py-3 px-3 text-xs" style={{ color: "var(--ink-400)" }}>
+                        {g.n}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -156,10 +167,12 @@ export default async function SalariosPage() {
             </div>
           </section>
 
+          {/* ====== 2. CARDS INDIVIDUAIS ====== */}
           <section>
             <p className="font-sans text-xs uppercase tracking-[0.2em] mb-4" style={{ color: "var(--ink-600)" }}>
               Submissões individuais detalhadas
             </p>
+
             <div className="space-y-3">
               {rows.map((r: any, i: number) => {
                 const meses = r.forma_recebimento === "14" ? 14 : 12;
@@ -169,14 +182,21 @@ export default async function SalariosPage() {
                   <div key={i} className="card-paper p-6">
                     <div className="flex justify-between items-start gap-4 flex-wrap mb-3">
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-display text-2xl leading-tight" style={{ color: "var(--ink-900)" }}>{r.cargo}</h3>
+                        <h3 className="font-display text-2xl leading-tight" style={{ color: "var(--ink-900)" }}>
+                          {r.cargo}
+                        </h3>
                         <p className="font-sans text-sm mt-1" style={{ color: "var(--ink-600)" }}>
-                          {r.engenharia} · {r.anos_experiencia} {r.anos_experiencia === 1 ? "ano" : "anos"}{r.cidade ? ` · ${r.cidade}` : ""}
+                          {r.engenharia} · {r.anos_experiencia} {r.anos_experiencia === 1 ? "ano" : "anos"}
+                          {r.cidade ? ` · ${r.cidade}` : ""}
                         </p>
                         {r.empresa ? (
-                          <p className="font-sans text-xs mt-1" style={{ color: "var(--ink-400)" }}>🏢 {r.empresa}</p>
+                          <p className="font-sans text-xs mt-1" style={{ color: "var(--ink-400)" }}>
+                            🏢 {r.empresa}
+                          </p>
                         ) : (
-                          <p className="font-sans text-xs mt-1 italic" style={{ color: "var(--ink-400)" }}>Empresa não indicada</p>
+                          <p className="font-sans text-xs mt-1 italic" style={{ color: "var(--ink-400)" }}>
+                            Empresa não indicada
+                          </p>
                         )}
                       </div>
                       <div className="text-right">
@@ -189,6 +209,7 @@ export default async function SalariosPage() {
                         </p>
                       </div>
                     </div>
+
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-t border-b" style={{ borderColor: "var(--ink-200)" }}>
                       <div>
                         <p className="font-sans uppercase tracking-wider text-[10px]" style={{ color: "var(--ink-400)" }}>Líquido/mês</p>
@@ -213,11 +234,16 @@ export default async function SalariosPage() {
                         <p className="font-sans text-sm font-medium mt-1" style={{ color: "var(--ink-900)" }}>{nivel.label}</p>
                       </div>
                     </div>
+
                     <div className="flex justify-between items-center gap-2 flex-wrap mt-3">
                       <div className="flex flex-wrap gap-1.5">
                         {r.beneficios && r.beneficios.length > 0 ? (
                           r.beneficios.map((b: string, j: number) => (
-                            <span key={j} className="font-sans text-xs px-2 py-1 rounded" style={{ background: "rgba(92,122,91,0.12)", color: "var(--sage)" }}>
+                            <span
+                              key={j}
+                              className="font-sans text-xs px-2 py-1 rounded"
+                              style={{ background: "rgba(92,122,91,0.12)", color: "var(--sage)" }}
+                            >
                               {b}
                             </span>
                           ))
