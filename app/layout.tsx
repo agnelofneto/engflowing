@@ -117,16 +117,19 @@ export default function RootLayout({
               </ul>
             </div>
           </div>
-          <div className="text-center py-6 text-xs font-sans" style={{ color: "var(--ink-400)" }}>
-            © {new Date().getFullYear()} EngFlowing · Feito em Portugal ·{" "}
+          <div className="text-center py-6 text-xs font-sans flex items-center justify-center gap-2 flex-wrap" style={{ color: "var(--ink-400)" }}>
+            <span>© {new Date().getFullYear()} EngFlowing · Feito em Portugal ·</span>
             <a
               href="https://www.linkedin.com/in/agneloneto/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:underline"
+              className="inline-flex items-center gap-1.5 hover:underline"
               style={{ color: "var(--amber-deep)" }}
             >
-              LinkedIn do criador
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 17.34V10.5H6.06v6.84h2.28zM7.2 9.24a1.32 1.32 0 1 0 0-2.64 1.32 1.32 0 0 0 0 2.64zm10.14 8.1v-3.75c0-2-.43-3.54-2.77-3.54-1.12 0-1.88.62-2.19 1.2h-.03v-1.02H10.2v6.84h2.28v-3.39c0-.9.17-1.76 1.28-1.76 1.1 0 1.11 1.03 1.11 1.82v3.33h2.27z" />
+              </svg>
+              agneloneto
             </a>
           </div>
         </footer>
