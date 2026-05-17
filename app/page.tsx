@@ -59,7 +59,8 @@ async function getCounts() {
 }
 
 export default async function HomePage() {
-  const [aggregated, counts] = await Promise.all([getAggregatedSalaries(), getCounts()]);
+ const [cargoSummary, counts] = await Promise.all([getCargoSummary(), getCounts()]);
+  const topCargos = cargoSummary.slice(0, 8);
 
   return (
     <div className="max-w-6xl mx-auto px-6">
