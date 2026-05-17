@@ -1,48 +1,57 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { ENGENHARIAS } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-interface AggregatedSalary {
-  engenharia: string;
-  junior: number | null;
-  pleno: number | null;
-  senior: number | null;
-  total: number;
+function nivelFromExp(anos: number): { label: string; bg: string; color: string } {
+  if (anos <= 3) return { label: "Júnior", bg: "rgba(55,138,221,0.12)", color: "#042C53" };
+  if (anos <= 7) return { label: "Pleno", bg: "rgba(186,117,23,0.12)", color: "#854F0B" };
+  return { label: "Sénior", bg: "rgba(15,110,86,0.12)", color: "#04342C" };
 }
 
-async function getAggregatedSalaries(): Promise<AggregatedSalary[]> {
+interface CargoGroup {
+  cargo: string;
+  cidade: string;
+  nivel: { label: string; bg: string; color: string };
+  baseMensal: number;
+  liquidoMensal: number | null;
+  n: number;
+}
+
+async function getCargoSummary(): Promise<CargoGroup[]> {
   const { data } = await supabase
     .from("salaries")
-    .select("engenharia, anos_experiencia, salario_base_mensal, forma_recebimento")
+    .select("cargo, cidade, anos_experiencia, salario_base_mensal, salario_liquido_mensal")
     .eq("status", "aprovado");
 
   if (!data) return [];
 
-  const groups: Record<string, { junior: number[]; pleno: number[]; senior: number[] }> = {};
-
-  for (const row of data) {
-    if (!groups[row.engenharia]) {
-      groups[row.engenharia] = { junior: [], pleno: [], senior: [] };
+  const groups: Record<string, any> = {};
+  for (const r of data) {
+    const cargo = (r.cargo || "").trim();
+    const cidade = (r.cidade || "Não indicada").trim();
+    const nivel = nivelFromExp(r.anos_experiencia);
+    const key = `${cargo.toLowerCase()}|${cidade.toLowerCase()}|${nivel.label}`;
+    if (!groups[key]) {
+      groups[key] = { cargo, cidade, nivel, bases: [] as number[], liquidos: [] as number[] };
     }
-    const meses = row.forma_recebimento === "14" ? 14 : 12;
-    const anual = Number(row.salario_base_mensal) * meses;
-    const exp = row.anos_experiencia;
-    const bucket = exp <= 3 ? "junior" : exp <= 7 ? "pleno" : "senior";
-    groups[row.engenharia][bucket].push(anual);
+    if (r.salario_base_mensal) groups[key].bases.push(Number(r.salario_base_mensal));
+    if (r.salario_liquido_mensal) groups[key].liquidos.push(Number(r.salario_liquido_mensal));
   }
 
-  const avg = (arr: number[]) => (arr.length >= 5 ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : null);
+  const avg = (arr: number[]) => (arr.length ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : 0);
 
-  return Object.entries(groups).map(([engenharia, b]) => ({
-    engenharia,
-    junior: avg(b.junior),
-    pleno: avg(b.pleno),
-    senior: avg(b.senior),
-    total: b.junior.length + b.pleno.length + b.senior.length,
-  })).sort((a, b) => b.total - a.total);
+  return Object.values(groups)
+    .map((g: any) => ({
+      cargo: g.cargo,
+      cidade: g.cidade,
+      nivel: g.nivel,
+      baseMensal: avg(g.bases),
+      liquidoMensal: g.liquidos.length > 0 ? avg(g.liquidos) : null,
+      n: g.bases.length,
+    }))
+    .sort((a, b) => b.baseMensal - a.baseMensal);
 }
 
 async function getCounts() {
