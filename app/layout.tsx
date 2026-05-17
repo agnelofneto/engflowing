@@ -66,7 +66,7 @@ export default function RootLayout({
               <Link href="/salarios" className="px-3 py-2 hover:opacity-70 transition" style={{ color: "var(--ink-600)" }}>
                 Salários
               </Link>
-          <Link href="/empresas" className="px-3 py-2 hover:opacity-70 transition" style={{ color: "var(--ink-600)" }}>
+              <Link href="/empresas" className="px-3 py-2 hover:opacity-70 transition" style={{ color: "var(--ink-600)" }}>
                 Empresas
               </Link>
               <Link href="/diplomas" className="px-3 py-2 hover:opacity-70 transition" style={{ color: "var(--ink-600)" }}>
@@ -118,7 +118,16 @@ export default function RootLayout({
             </div>
           </div>
           <div className="text-center py-6 text-xs font-sans" style={{ color: "var(--ink-400)" }}>
-            © {new Date().getFullYear()} EngFlowing · Feito em Portugal
+            © {new Date().getFullYear()} EngFlowing · Feito em Portugal ·{" "}
+            <a
+              href="https://www.linkedin.com/in/agneloneto/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+              style={{ color: "var(--amber-deep)" }}
+            >
+              LinkedIn do criador
+            </a>
           </div>
         </footer>
       </body>
