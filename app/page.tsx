@@ -55,15 +55,20 @@ async function getCargoSummary(): Promise<CargoGroup[]> {
 }
 
 async function getCounts() {
-  const [s, c, r] = await Promise.all([
+  const [s, reviewsData] = await Promise.all([
     supabase.from("salaries").select("id", { count: "exact", head: true }).eq("status", "aprovado"),
-    supabase.from("companies").select("id", { count: "exact", head: true }),
-    supabase.from("reviews").select("id", { count: "exact", head: true }).eq("status", "aprovado"),
+    supabase.from("reviews").select("empresa_nome").eq("status", "aprovado"),
   ]);
+
+  const reviews = reviewsData.data ?? [];
+  const empresasDistintas = new Set(
+    reviews.map((r: any) => (r.empresa_nome || "").trim().toLowerCase()).filter(Boolean)
+  );
+
   return {
     salaries: s.count ?? 0,
-    companies: c.count ?? 0,
-    reviews: r.count ?? 0,
+    companies: empresasDistintas.size,
+    reviews: reviews.length,
   };
 }
 
@@ -77,7 +82,7 @@ export default async function HomePage() {
       <section className="pt-16 pb-20 grid md:grid-cols-12 gap-8 items-start">
         <div className="md:col-span-7">
           <div className="font-sans text-xs uppercase tracking-[0.3em] mb-6" style={{ color: "var(--amber-accent)" }}>
-            ✦ &nbsp; Vol. I &nbsp; · &nbsp; Edição contínua &nbsp; · &nbsp; Lisboa &nbsp; ·
+            ✦ &nbsp; Vol. I &nbsp; · &nbsp; Edição contínua
           </div>
           <h1 className="font-display text-[2.8rem] md:text-[4rem] leading-[1.05] mb-6" style={{ color: "var(--ink-900)" }}>
             O que vale o teu<br />
