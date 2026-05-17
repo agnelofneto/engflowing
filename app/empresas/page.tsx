@@ -20,6 +20,7 @@ interface CompanyAgg {
   pontos_negativos: string[];
 }
 
+// Extrair frases curtas dos comentários (separadas por vírgula ou ponto)
 function extractKeyPhrases(texts: string[]): { phrase: string; count: number }[] {
   const phrases: Record<string, number> = {};
   texts.forEach((t) => {
@@ -136,6 +137,7 @@ export default async function EmpresasPage() {
             const ultima = c.ultima_avaliacao;
             return (
               <div key={i} className="card-paper p-6">
+                {/* Cabeçalho */}
                 <div className="flex justify-between items-start gap-4 mb-4 flex-wrap">
                   <div>
                     <h3 className="font-display text-2xl leading-tight" style={{ color: "var(--ink-900)" }}>{c.empresa}</h3>
@@ -153,18 +155,26 @@ export default async function EmpresasPage() {
                   </div>
                 </div>
 
+                {/* Barras por categoria */}
                 <div className="mb-4 space-y-1.5">
                   {categorias.map((cat, j) => (
                     <div key={j} className="grid items-center gap-3" style={{ gridTemplateColumns: "100px 1fr 32px" }}>
                       <span className="font-sans text-xs" style={{ color: "var(--ink-600)" }}>{cat.label}</span>
                       <div className="h-1.5 rounded overflow-hidden" style={{ background: "rgba(0,0,0,0.06)" }}>
-                        <div style={{ width: `${(cat.val / 5) * 100}%`, height: "100%", background: "var(--amber-accent)" }} />
+                        <div
+                          style={{
+                            width: `${(cat.val / 5) * 100}%`,
+                            height: "100%",
+                            background: "var(--amber-accent)",
+                          }}
+                        />
                       </div>
                       <span className="font-sans text-xs font-medium tabular-nums text-right">{cat.val.toFixed(1)}</span>
                     </div>
                   ))}
                 </div>
 
+                {/* Mais referido */}
                 {(c.pontos_positivos.length > 0 || c.pontos_negativos.length > 0) && (
                   <div className="mt-4 mb-4">
                     <p className="font-sans text-[10px] uppercase tracking-wider mb-2" style={{ color: "var(--ink-400)" }}>
@@ -193,6 +203,7 @@ export default async function EmpresasPage() {
                   </div>
                 )}
 
+                {/* Última avaliação completa com comentários */}
                 {ultima && (ultima.pontos_positivos || ultima.pontos_negativos) && (
                   <div className="mt-4 pt-4 border-t" style={{ borderColor: "var(--ink-200)" }}>
                     <p className="font-sans text-[10px] uppercase tracking-wider mb-2" style={{ color: "var(--ink-400)" }}>
