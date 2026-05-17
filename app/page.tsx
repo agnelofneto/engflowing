@@ -68,7 +68,7 @@ async function getCounts() {
 }
 
 export default async function HomePage() {
- const [cargoSummary, counts] = await Promise.all([getCargoSummary(), getCounts()]);
+  const [cargoSummary, counts] = await Promise.all([getCargoSummary(), getCounts()]);
   const topCargos = cargoSummary.slice(0, 8);
 
   return (
@@ -149,11 +149,11 @@ export default async function HomePage() {
               Quadro I
             </div>
             <h2 className="font-display text-4xl md:text-5xl mb-3" style={{ color: "var(--ink-900)" }}>
-              Salários médios por engenharia
+              Resumo agregado por cargo
             </h2>
             <p className="font-sans text-sm leading-relaxed max-w-xl" style={{ color: "var(--ink-600)" }}>
-              Valores brutos anuais em euros, agregados a partir das submissões da comunidade.
-              Apenas cadeias com cinco ou mais submissões são publicadas — proteção mínima de anonimato.
+              Médias calculadas a partir das submissões da comunidade, agrupadas por cargo,
+              cidade e nível de experiência.
             </p>
           </div>
           <div className="md:col-span-4 md:text-right">
@@ -164,49 +164,73 @@ export default async function HomePage() {
         </div>
 
         <div className="card-paper p-2 md:p-6">
-          <table className="w-full font-sans">
-            <thead>
-              <tr className="border-b" style={{ borderColor: "var(--ink-900)" }}>
-                <th className="text-left py-3 px-2 text-xs uppercase tracking-wider font-medium" style={{ color: "var(--ink-600)" }}>
-                  Engenharia
-                </th>
-                <th className="text-right py-3 px-2 text-xs uppercase tracking-wider font-medium" style={{ color: "var(--ink-600)" }}>
-                  Júnior <span className="font-normal lowercase" style={{ color: "var(--ink-400)" }}>0–3 anos</span>
-                </th>
-                <th className="text-right py-3 px-2 text-xs uppercase tracking-wider font-medium" style={{ color: "var(--ink-600)" }}>
-                  Pleno <span className="font-normal lowercase" style={{ color: "var(--ink-400)" }}>3–7 anos</span>
-                </th>
-                <th className="text-right py-3 px-2 text-xs uppercase tracking-wider font-medium" style={{ color: "var(--ink-600)" }}>
-                  Sénior <span className="font-normal lowercase" style={{ color: "var(--ink-400)" }}>7+ anos</span>
-                </th>
-                <th className="text-center py-3 px-2 text-xs uppercase tracking-wider font-medium" style={{ color: "var(--ink-600)" }}>
-                  N
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {ENGENHARIAS.filter(e => e !== "Outra").map((eng) => {
-                const row = aggregated.find(a => a.engenharia === eng);
-                const fmt = (n: number | null | undefined) =>
-                  n ? `${n.toLocaleString("pt-PT")} €` : <span style={{ color: "var(--ink-400)" }}>—</span>;
-                return (
-                  <tr key={eng} className="border-b border-dashed" style={{ borderColor: "var(--ink-200)" }}>
-                    <td className="py-3 px-2 text-sm" style={{ color: "var(--ink-900)" }}>{eng}</td>
-                    <td className="py-3 px-2 text-right text-sm tabular-nums">{fmt(row?.junior)}</td>
-                    <td className="py-3 px-2 text-right text-sm tabular-nums">{fmt(row?.pleno)}</td>
-                    <td className="py-3 px-2 text-right text-sm tabular-nums">{fmt(row?.senior)}</td>
-                    <td className="py-3 px-2 text-center text-xs tabular-nums" style={{ color: "var(--ink-400)" }}>
-                      {row?.total || 0}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          {aggregated.length === 0 && (
+          {topCargos.length === 0 ? (
             <div className="text-center py-10 font-sans text-sm italic" style={{ color: "var(--ink-400)" }}>
               Ainda não há submissões aprovadas. Sê o primeiro a partilhar.
             </div>
+          ) : (
+            <>
+              <table className="w-full font-sans">
+                <thead>
+                  <tr className="border-b" style={{ borderColor: "var(--ink-900)" }}>
+                    <th className="text-left py-3 px-2 text-xs uppercase tracking-wider font-medium" style={{ color: "var(--ink-600)" }}>
+                      Cargo
+                    </th>
+                    <th className="text-left py-3 px-2 text-xs uppercase tracking-wider font-medium" style={{ color: "var(--ink-600)" }}>
+                      Cidade
+                    </th>
+                    <th className="text-center py-3 px-2 text-xs uppercase tracking-wider font-medium" style={{ color: "var(--ink-600)" }}>
+                      Nível
+                    </th>
+                    <th className="text-right py-3 px-2 text-xs uppercase tracking-wider font-medium" style={{ color: "var(--ink-600)" }}>
+                      Base/mês
+                    </th>
+                    <th className="text-right py-3 px-2 text-xs uppercase tracking-wider font-medium" style={{ color: "var(--ink-600)" }}>
+                      Líq./mês
+                    </th>
+                    <th className="text-center py-3 px-2 text-xs uppercase tracking-wider font-medium" style={{ color: "var(--ink-600)" }}>
+                      N
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {topCargos.map((g, i) => (
+                    <tr key={i} className="border-b border-dashed" style={{ borderColor: "var(--ink-200)" }}>
+                      <td className="py-3 px-2 text-sm" style={{ color: "var(--ink-900)" }}>{g.cargo}</td>
+                      <td className="py-3 px-2 text-sm" style={{ color: "var(--ink-600)" }}>{g.cidade}</td>
+                      <td className="py-3 px-2 text-center">
+                        <span
+                          className="font-sans text-xs px-2 py-0.5 rounded-full font-medium"
+                          style={{ background: g.nivel.bg, color: g.nivel.color }}
+                        >
+                          {g.nivel.label}
+                        </span>
+                      </td>
+                      <td className="py-3 px-2 text-right text-sm tabular-nums font-medium">
+                        {g.baseMensal.toLocaleString("pt-PT")} €
+                      </td>
+                      <td className="py-3 px-2 text-right text-sm tabular-nums">
+                        {g.liquidoMensal ? `${g.liquidoMensal.toLocaleString("pt-PT")} €` : <span style={{ color: "var(--ink-400)" }}>—</span>}
+                      </td>
+                      <td className="py-3 px-2 text-center text-xs tabular-nums" style={{ color: "var(--ink-400)" }}>
+                        {g.n}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {cargoSummary.length > 8 && (
+                <div className="text-center pt-5">
+                  <Link
+                    href="/salarios"
+                    className="font-sans text-sm underline underline-offset-4"
+                    style={{ color: "var(--amber-deep)" }}
+                  >
+                    Ver quadro completo ({cargoSummary.length} cargos) →
+                  </Link>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
