@@ -286,6 +286,42 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* DIVIDER */}
+      <div className="divider"><span className="divider-mark">✦</span></div>
+
+      {/* LINKEDIN — mensagem pessoal do criador */}
+      <section className="pb-20">
+        <div className="card-paper p-10 md:p-12 text-center max-w-2xl mx-auto">
+          <div className="font-sans text-xs uppercase tracking-[0.3em] mb-4" style={{ color: "var(--amber-accent)" }}>
+            ✦ &nbsp; Do criador
+          </div>
+          <p className="font-display text-2xl md:text-3xl leading-snug mb-4" style={{ color: "var(--ink-900)" }}>
+            Em prol de todos os engenheiros, resolvi construir algo simples e de
+            consulta aberta a todos.
+          </p>
+          <p className="font-sans text-base leading-relaxed mb-8" style={{ color: "var(--ink-600)" }}>
+            O EngFlowing é um projeto independente, feito por um engenheiro para a
+            comunidade. Se este trabalho te for útil, acompanha-me no LinkedIn —
+            o teu apoio ajuda o projeto a crescer.
+          </p>
+          <a
+            href="https://www.linkedin.com/in/agneloneto/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 px-6 py-3 font-sans text-sm hover:opacity-90 transition"
+            style={{ background: "var(--ink-900)", color: "var(--paper)" }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 17.34V10.5H6.06v6.84h2.28zM7.2 9.24a1.32 1.32 0 1 0 0-2.64 1.32 1.32 0 0 0 0 2.64zm10.14 8.1v-3.75c0-2-.43-3.54-2.77-3.54-1.12 0-1.88.62-2.19 1.2h-.03v-1.02H10.2v6.84h2.28v-3.39c0-.9.17-1.76 1.28-1.76 1.1 0 1.11 1.03 1.11 1.82v3.33h2.27z" />
+            </svg>
+            Seguir Agnelo Neto no LinkedIn →
+          </a>
+          <p className="font-sans text-xs mt-3" style={{ color: "var(--ink-400)" }}>
+            linkedin.com/in/agneloneto
+          </p>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="pb-24">
         <div className="card-paper grain p-12 md:p-16 text-center relative overflow-hidden">
